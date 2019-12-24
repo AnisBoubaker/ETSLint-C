@@ -1,4 +1,5 @@
-from rules import BaseRule
+from rules import BaseRule, BaseTest
+import unittest
 
 
 class RuleVarOnOwnLine(BaseRule):
@@ -22,3 +23,32 @@ class RuleVarOnOwnLine(BaseRule):
         # It's probably overkill to keep all declarations in a list. However, we can't be sure the AST traversal will be
         # sequential.
         self.__declared += [{'name': node.name, 'line': node.coord.line}]
+
+
+class TestVarOnOwnLine(BaseTest):
+
+    def setUp(self):
+        self._rule_instance = RuleVarOnOwnLine(self._reporter)
+
+    def test1(self):
+        self._tested_code = """
+        int main(){
+            int a, 
+                b;
+        }
+        """
+        self._run_rule()
+        self.expect_no_error("Variable on each line OK")
+
+    def test2(self):
+        self._tested_code = """
+        int main(){
+            int a, b;
+        }
+        """
+        self._run_rule()
+        self.expect_error("two variables on same line NOOK")
+
+
+if __name__ == '__main__':
+    unittest.main()

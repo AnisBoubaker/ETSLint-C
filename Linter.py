@@ -1,5 +1,5 @@
 import rules
-from pycparser import c_ast, parse_file
+from pycparser import c_ast, parse_file, c_parser
 import pycparser_fake_libc
 from os import walk
 import os.path

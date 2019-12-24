@@ -42,3 +42,9 @@ class BaseReporter(object):
 
     def generate_report(self):
         print("Error: Base reporter cannot generate a report.")
+
+    def get_reports_by_rule(self, rule):
+        return [t for t in self.__reports if t.rule == rule]
+
+    def clear(self):
+        self.__reports.clear()

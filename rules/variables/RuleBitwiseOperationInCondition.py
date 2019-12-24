@@ -1,5 +1,9 @@
-from rules import BaseRule
+from rules import BaseRule, BaseTest
+import unittest
 from pycparser.c_ast import BinaryOp, UnaryOp
+from pycparser.c_parser import CParser
+from reporters.NoopReporter import NoopReporter
+
 
 class RuleBitwiseOperationInCondition(BaseRule):
     def __init__(self, reporter=None):
@@ -46,3 +50,107 @@ class RuleBitwiseOperationInCondition(BaseRule):
 
     def visit_DoWhile(self, node):
         self.__report_bitwise_error(node, "do..while")
+
+
+class TestBitwiseOperationInCondition(BaseTest):
+    def setUp(self):
+        self._rule_instance = RuleBitwiseOperationInCondition(self._reporter)
+
+    def test1(self):
+        self._tested_code = """
+        int main(){
+            if(a && b){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_no_error("a && b is OK")
+
+    def test2(self):
+        self._tested_code = """
+        int main(){
+            if(a || b){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_no_error("a || b is OK")
+
+    def test3(self):
+        self._tested_code = """
+        int main(){
+            if(a & b){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise & is NOOK")
+
+    def test4(self):
+        self._tested_code = """
+        int main(){
+            if(a | b){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise | is NOOK")
+
+    def test5(self):
+        self._tested_code = """
+        int main(){
+            if((a && b) || (b && c)){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_no_error("Compound condition OK")
+
+    def test6(self):
+        self._tested_code = """
+        int main(){
+            if((a && b) | (b && c)){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise in compound condition 1 NOOK")
+
+    def test7(self):
+        self._tested_code = """
+        int main(){
+            if((a && b) || (b & c)){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise in compound condition 2 NOOK")
+
+    def test8(self):
+        self._tested_code = """
+        int main(){
+            if((a && b) || !(b && c)){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_no_error("Compound condition with unary OK")
+
+    def test9(self):
+        self._tested_code = """
+        int main(){
+            if((a && b) || !(b & c)){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Compound condition with unary containing bitwise NOOK")
