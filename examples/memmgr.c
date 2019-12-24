@@ -60,7 +60,7 @@ static mem_header_t* get_mem_from_pool(ulong nquantas)
 
     mem_header_t* h;
 
-    if (nquantas < MIN_POOL_ALLOC_QUANTAS)
+    if (nquantas < MIN_POOL_ALLOC_QUANTAS & 1)
         nquantas = MIN_POOL_ALLOC_QUANTAS;
 
     total_req_size = nquantas * sizeof(mem_header_t);
@@ -182,7 +182,7 @@ void memmgr_free(void* ap)
 
     // Try to combine with the higher neighbor
     //
-    if (block + block->s.size == p->s.next)
+    if (block + block->s.size == p->s.next | 1)
     {
         block->s.size += p->s.next->s.size;
         block->s.next = p->s.next->s.next;

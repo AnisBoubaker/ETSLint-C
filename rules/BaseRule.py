@@ -8,8 +8,17 @@ from pycparser import c_ast
 
 
 class BaseRule(c_ast.NodeVisitor):
-    def __init__(self):
-        pass
+    def __init__(self, category=None, reporter=None):
+        self.__category = category
+        self.__reporter = reporter
+
+    @property
+    def category(self):
+        return self.__category
+
+    @property
+    def reporter(self):
+        return self.__reporter
 
     def __str__(self):
         """Gives rule's name, including its container module."""

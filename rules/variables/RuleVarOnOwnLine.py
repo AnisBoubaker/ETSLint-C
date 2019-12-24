@@ -1,16 +1,11 @@
-from pycparser import c_ast
 from rules import BaseRule
 
 
 class RuleVarOnOwnLine(BaseRule):
     __declared = []
 
-    def __init__(self):
-        self.__reporter = None
-
-    @property
-    def reporter(self):
-        return self.__reporter
+    def __init__(self, reporter=None):
+        BaseRule.__init__(self, "style", reporter)
 
     def visit_Decl(self, node):
         sameline_variable = [var for var in self.__declared if var['line'] == node.coord.line]
@@ -18,4 +13,6 @@ class RuleVarOnOwnLine(BaseRule):
         if len(sameline_variable):
             print("Variable {} should be declared on its own line.".format(node.name))
 
+        # It's probably overkill to keep all declarations in a list. However, we can't be sure the AST traversal will be
+        # sequential.
         self.__declared += [{'name': node.name, 'line': node.coord.line}]
