@@ -4,7 +4,6 @@ from pycparser.c_ast import BinaryOp, UnaryOp
 class RuleBitwiseOperationInCondition(BaseRule):
     def __init__(self, reporter=None):
         BaseRule.__init__(self, "static", reporter)
-        self.__reporter = None
 
     def __get_all_bitwise_conditions(self, cond):
         result = []
@@ -32,8 +31,9 @@ class RuleBitwiseOperationInCondition(BaseRule):
         if len(bitwise_conds) == 0:
             return
         for cond in bitwise_conds:
-            print("Condition in {} statement uses bitwise operator {} (probable confusion with comparison operator {}) {}."
-                  .format(statement, cond.op, 2 * cond.op, cond.coord.line))
+            message = "Condition in {} statement uses bitwise operator {} (probable confusion with comparison operator {})."\
+                .format(statement, cond.op, 2 * cond.op)
+            self.reporter.do_report(self, node.coord, message)
 
     def visit_If(self, node):
         self.__report_bitwise_error(node, "if")

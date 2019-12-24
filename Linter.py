@@ -5,7 +5,8 @@ import pycparser_fake_libc
 
 class Linter(object):
 
-    def __init__(self):
+    def __init__(self, reporter):
+        self.__reporter = reporter
         self.__rules_available = []
         self.__get_all_rules()
 
@@ -25,4 +26,4 @@ class Linter(object):
             var = getattr(rules, attr)
             if type(var) == type and var is not rules.BaseRule and issubclass(var, c_ast.NodeVisitor):
                 classes.append(var)
-        self.__rules_available = [c() for c in classes]
+        self.__rules_available = [c(self.__reporter) for c in classes]

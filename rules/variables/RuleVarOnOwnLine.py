@@ -11,7 +11,8 @@ class RuleVarOnOwnLine(BaseRule):
         sameline_variable = [var for var in self.__declared if var['line'] == node.coord.line]
 
         if len(sameline_variable):
-            print("Variable {} should be declared on its own line.".format(node.name))
+            message = "Variable {} should be declared on its own line.".format(node.name)
+            self.reporter.do_report(self, node.coord, message)
 
         # It's probably overkill to keep all declarations in a list. However, we can't be sure the AST traversal will be
         # sequential.
