@@ -1,6 +1,6 @@
 import sys
 from Linter import Linter
-from reporters import PrintReporter
+from reporters import JsonReporter
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -8,7 +8,7 @@ if __name__ == "__main__":
     else:
         filename = 'examples/memmgr.c'
 
-    reporter = PrintReporter()
+    reporter = JsonReporter('report.json')
     lint = Linter(reporter)
     lint.run_all_rules(filename)
-    reporter.generate_report()
+    print(reporter.generate_report())
