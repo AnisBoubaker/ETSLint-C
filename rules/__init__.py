@@ -11,3 +11,4 @@ rule classes that are not production ready.
 from .BaseRule import BaseRule
 from .BaseTest import BaseTest
 from .variables import *
+from .bugprone import *

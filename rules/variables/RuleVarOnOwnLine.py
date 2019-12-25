@@ -49,6 +49,35 @@ class TestVarOnOwnLine(BaseTest):
         self._run_rule()
         self.expect_error("two variables on same line NOOK")
 
+    def test3(self):
+        self._tested_code = """
+        typedef struct{
+            int x;
+            double y;
+        } my_type;
+        
+        int main(){
+            my_type a, 
+                    b;
+        }
+        """
+        self._run_rule()
+        self.expect_no_error("User defined variables on separate lines OK")
+
+    def test4(self):
+        self._tested_code = """
+        typedef struct{
+            int x;
+            double y;
+        } my_type;
+
+        int main(){
+            my_type a, b;
+        }
+        """
+        self._run_rule()
+        self.expect_error("User defined variables on the same line NOOK")
+
 
 if __name__ == '__main__':
     unittest.main()

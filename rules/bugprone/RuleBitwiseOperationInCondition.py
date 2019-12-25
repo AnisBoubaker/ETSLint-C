@@ -154,3 +154,36 @@ class TestBitwiseOperationInCondition(BaseTest):
         """
         self._run_rule()
         self.expect_error("Compound condition with unary containing bitwise NOOK")
+
+    def test10(self):
+        self._tested_code = """
+        int main(){
+            for(int i=0; (a && b) || !(b & c); i++){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise in for loop condition NOOK")
+
+    def test11(self):
+        self._tested_code = """
+        int main(){
+            while( (a && b) || !(b & c) ){
+                printf("This test should pass");
+            }
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise in while loop condition NOOK")
+
+    def test12(self):
+        self._tested_code = """
+        int main(){
+            do{
+                printf("This test should pass");
+            } while( (a && b) || !(b & c) );
+        }
+        """
+        self._run_rule()
+        self.expect_error("Bitwise in for loop condition NOOK")
