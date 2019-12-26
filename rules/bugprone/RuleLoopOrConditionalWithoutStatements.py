@@ -11,13 +11,15 @@ class RuleLoopOrConditionalWithoutStatements(BaseRule):
             message = "If statement has no instructions. You should remove the `;` after `if` condition."
             self.reporter.do_report(self, node.coord, message)
 
-    def visit_For(self, node):
+    def visit_For(self, node, message=None):
+        if message is None:
+            message = "For/While loop has no instructions. You should remove the `;` after `for` declaration."
         if isinstance(node.stmt, EmptyStatement):
-            message = "For loop has no instructions. You should remove the `;` after `for` declaration."
             self.reporter.do_report(self, node.coord, message)
 
     def visit_While(self, node):
-        self.visit_For(node)
+        message = "While loop has no instructions. You should remove the `;` after `for` declaration."
+        self.visit_For(node, message)
 
 
 class TestLoopOrConditionalWithoutStatements(BaseTest):
