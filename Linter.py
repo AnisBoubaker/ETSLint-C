@@ -30,6 +30,7 @@ class Linter(object):
 
         for file in self.__files_to_parse:
             ast = parse_file(file, use_cpp=True, cpp_args=r"-I" + fake_libc_arg)
+            print
 
             for rule in self.__rules_available:
                 rule.visit(ast)

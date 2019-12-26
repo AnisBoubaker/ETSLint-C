@@ -1,4 +1,5 @@
 from rules import BaseRule, BaseTest
+from pycparser import CParser
 import unittest
 
 
@@ -16,7 +17,7 @@ class RuleVarOnOwnLine(BaseRule):
 
         sameline_variable = [var for var in self.__declared if var['line'] == node.coord.line]
 
-        if len(sameline_variable):
+        if len(sameline_variable) > 0:
             message = "Variable {} should be declared on its own line.".format(node.name)
             self.reporter.do_report(self, node.coord, message)
 
@@ -73,6 +74,7 @@ class TestVarOnOwnLine(BaseTest):
 
         int main(){
             my_type a, b;
+            a =!(10+5);
         }
         """
         self._run_rule()

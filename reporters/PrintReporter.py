@@ -8,6 +8,6 @@ class PrintReporter(BaseReporter):
     def generate_report(self):
         reports = self.reports
         for report in reports:
-            print("{}:{}:{} [{}]{}".format(report.file_name, report.line, report.column,
-                                           str(report.rule), report.message))
+            print("{}:{}:{} {} [{}]".format(report.file_name, report.line, report.column,
+                                            report.message, str(report.rule)))
 
