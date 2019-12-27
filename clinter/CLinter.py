@@ -35,10 +35,15 @@ class NodeParenter(c_ast.NodeVisitor):
     def parents(self):
         return self.__parents
 
-    def get_parent(self, node):
-        if node not in self.__parents:
-            return None
-        return self.__parents[node]
+    def get_parent(self, node, level=1):
+        """Retrieves the ancestor node of `node` going up `level` levels in the hierarchy"""
+        curr_node = node
+        while level > 0:
+            if curr_node not in self.__parents:
+                return None
+            curr_node = self.__parents[node]
+            level -= 1
+        return curr_node
 
     def __str__(self):
         result = ""
@@ -77,8 +82,6 @@ class CLinter(object):
 
         for file in self.__files_to_parse:
             self.__ast = parse_file(file, use_cpp=True, cpp_args=r"-I" + fake_libc_arg)
-
-            parenter = NodeParenter.get_instance(self.__ast)
 
             for rule in self.__rules_available:
                 rule.visit(self.__ast)
