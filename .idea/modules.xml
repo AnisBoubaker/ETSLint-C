@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ETSLint-C.iml" filepath="$PROJECT_DIR$/.idea/ETSLint-C.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../etslint/.idea/etslint.iml" filepath="$PROJECT_DIR$/../etslint/.idea/etslint.iml" />
     </modules>
   </component>
 </project>

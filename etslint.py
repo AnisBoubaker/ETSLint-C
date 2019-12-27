@@ -1,7 +1,6 @@
-from Linter import Linter
-from reporters import *
+from clinter.reporters import *
 import argparse
-
+from clinter import CLinter
 
 def process_cmd_args():
     arg_parser = argparse.ArgumentParser()
@@ -30,7 +29,7 @@ def run_linter():
     else:
         lint_reporter = PrintReporter()
 
-    lint = Linter(lint_reporter, args.path)
+    lint = CLinter(lint_reporter, args.path)
     lint.run_all_rules()
 
     lint_reporter.generate_report()

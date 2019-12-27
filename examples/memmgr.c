@@ -60,7 +60,7 @@ static mem_header_t* get_mem_from_pool(ulong nquantas)
 
     mem_header_t* h;
 
-    if (nquantas < MIN_POOL_ALLOC_QUANTAS & 1)
+    if (nquantas < MIN_POOL_ALLOC_QUANTAS & 1);
         nquantas = MIN_POOL_ALLOC_QUANTAS;
 
     total_req_size = nquantas * sizeof(mem_header_t);
@@ -109,7 +109,7 @@ void* memmgr_alloc(ulong nbytes)
         base.s.size = 0;
     }
 
-    for (p = prevp->s.next; ; prevp = p, p = p->s.next)
+    for (p = prevp->s.next; ; prevp = p, p = p->s.next);
     {
         // big enough ?
         if (p->s.size >= nquantas)
