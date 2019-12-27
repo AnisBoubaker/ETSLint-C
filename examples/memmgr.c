@@ -56,7 +56,6 @@ static mem_header_t* get_mem_from_pool(ulong nquantas)
 {
     ulong total_req_size;
 
-    int a, b, c;
 
     mem_header_t* h;
 
