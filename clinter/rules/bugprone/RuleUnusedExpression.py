@@ -1,5 +1,5 @@
 from clinter.rules import BaseRule, BaseTest, RuleExecutionError
-from ...NodeParenter import NodeParenter
+from clinter.NodeParenter import NodeParenter
 from pycparser.c_ast import Compound
 
 class RuleUnusedExpression(BaseRule):

@@ -65,6 +65,8 @@ static mem_header_t* get_mem_from_pool(ulong nquantas)
 
     total_req_size = nquantas * sizeof(mem_header_t);
 
+    int a, b, c;
+
     if (pool_free_pos + total_req_size <= POOL_SIZE)
     {
         h = (mem_header_t*) (pool + pool_free_pos);
