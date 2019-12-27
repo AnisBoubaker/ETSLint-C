@@ -1,5 +1,5 @@
 from clinter.rules import BaseRule, BaseTest, RuleExecutionError
-from etslint import CLinter
+from ...NodeParenter import NodeParenter
 from pycparser.c_ast import Compound
 
 class RuleUnusedExpression(BaseRule):
@@ -23,7 +23,7 @@ class RuleUnusedExpression(BaseRule):
 
 
     def visit_FileAST(self, node):
-        self.__parenter = CLinter.NodeParenter.get_instance(node)
+        self.__parenter = NodeParenter.get_instance(node)
         self.generic_visit(node)
 
 

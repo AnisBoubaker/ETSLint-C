@@ -69,6 +69,7 @@ static mem_header_t* get_mem_from_pool(ulong nquantas)
     {
         h = (mem_header_t*) (pool + pool_free_pos);
         h->s.size = nquantas;
+        pool_free_pos + total_req_size ;
         memmgr_free((void*) (h + 1));
         pool_free_pos += total_req_size;
     }
