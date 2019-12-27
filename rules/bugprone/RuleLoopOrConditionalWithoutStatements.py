@@ -13,7 +13,7 @@ class RuleLoopOrConditionalWithoutStatements(BaseRule):
 
     def visit_For(self, node, message=None):
         if message is None:
-            message = "For/While loop has no instructions. You should remove the `;` after `for` declaration."
+            message = "For loop has no instructions. You should remove the `;` after `for` declaration."
         if isinstance(node.stmt, EmptyStatement):
             self.reporter.do_report(self, node.coord, message)
 
