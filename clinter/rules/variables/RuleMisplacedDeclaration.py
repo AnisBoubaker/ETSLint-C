@@ -34,7 +34,7 @@ class RuleMisplacedDeclaration(BaseRule):
             self.reporter.do_report(self, node.coord, message)
 
     def visit_ArrayDecl(self, node):
-        self.visit_TypeDecl()
+        self.visit_Decl()
 
     def visit_FileAST(self, node):
         # print(node)
