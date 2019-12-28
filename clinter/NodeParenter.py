@@ -42,7 +42,7 @@ class NodeParenter(c_ast.NodeVisitor):
 
     def get_farthest_parent_of_type(self, node: c_ast.Node, type_list: list):
         current_parent = node
-        while self.get_parent(current_parent) in type_list:
+        while self.get_parent(current_parent).__class__.__name__ in type_list:
             current_parent = self.get_parent(current_parent)
         if current_parent == node:
             return None
