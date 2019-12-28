@@ -40,14 +40,14 @@ class NodeParenter(c_ast.NodeVisitor):
             level -= 1
         return curr_node
 
-    def get_container_parent_of_type(self, node: c_ast.Node, type_list: list):
+    def get_first_parent_of_type(self, node: c_ast.Node, type_list: list):
         current_parent = node
         while self.get_parent(current_parent) is not None and \
                 self.get_parent(current_parent).__class__.__name__ not in type_list:
             current_parent = self.get_parent(current_parent)
         return self.get_parent(current_parent)
 
-    def get_container_parent_not_of_type(self, node: c_ast.Node, type_list: list):
+    def get_first_parent_not_of_type(self, node: c_ast.Node, type_list: list):
         current_parent = node
         while self.get_parent(current_parent).__class__.__name__ in type_list:
             current_parent = self.get_parent(current_parent)
