@@ -30,7 +30,7 @@ class NodeParenter(c_ast.NodeVisitor):
     def parents(self):
         return self.__parents
 
-    def get_parent(self, node, level=1):
+    def get_parent(self, node: c_ast.Node, level=1):
         """Retrieves the ancestor node of `node` going up `level` levels in the hierarchy"""
         curr_node = node
         while level > 0:
@@ -39,6 +39,14 @@ class NodeParenter(c_ast.NodeVisitor):
             curr_node = self.__parents[node]
             level -= 1
         return curr_node
+
+    def get_farthest_parent_of_type(self, node: c_ast.Node, type_list: list):
+        current_parent = node
+        while self.get_parent(current_parent) in type_list:
+            current_parent = self.get_parent(current_parent)
+        if current_parent == node:
+            return None
+        return current_parent
 
     def __str__(self):
         result = ""
