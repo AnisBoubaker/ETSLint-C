@@ -8,17 +8,17 @@ class NodeParenter(c_ast.NodeVisitor):
     """
     __instances = {}
 
-    def __init__(self, ast):
+    def __init__(self, node):
         self.__parents = {}
-        self.__ast = ast
-        self.visit(ast)
+        self.__ast = node
+        self.visit(node)
 
     @staticmethod
-    def get_instance(ast: FileAST):
-        if ast not in NodeParenter.__instances:
-            NodeParenter.__instances[ast] = NodeParenter(ast)
+    def get_instance(node: c_ast.Node):
+        if node not in NodeParenter.__instances:
+            NodeParenter.__instances[node] = NodeParenter(node)
 
-        return NodeParenter.__instances[ast]
+        return NodeParenter.__instances[node]
 
     def visit(self, node):
         children = node.children()
@@ -55,11 +55,12 @@ class NodeParenter(c_ast.NodeVisitor):
             return None
         return current_parent
 
-    def get_all_childs(self, parent: c_ast.Node):
+    def get_all_childs(self, parent: c_ast.Node, deep_search=False):
         childs = []
         for c in parent:
             childs += [c]
-            childs += self.get_all_childs(c)
+            if deep_search:
+                childs += self.get_all_childs(c)
         return childs
 
     def is_child_of(self, parent, node):
@@ -70,16 +71,16 @@ class NodeParenter(c_ast.NodeVisitor):
                 return True
         return False
 
-    def get_all_siblings(self, parent: c_ast.Node, ref_child: c_ast.Node):
-        childs = self.get_all_childs(parent)
+    def get_all_siblings(self, parent: c_ast.Node, ref_child: c_ast.Node, deep_search=False):
+        childs = self.get_all_childs(parent, deep_search)
         siblings = []
         for c in childs:
             if c != ref_child and not self.is_child_of(ref_child, c):
                 siblings += [c]
         return siblings
 
-    def get_all_next_siblings(self, parent: c_ast.Node, ref_child: c_ast.Node):
-        childs = self.get_all_childs(parent)
+    def get_all_next_siblings(self, parent: c_ast.Node, ref_child: c_ast.Node, deep_search=False):
+        childs = self.get_all_childs(parent, deep_search)
         next_childs = []
         found = False
         for c in childs:
@@ -88,6 +89,16 @@ class NodeParenter(c_ast.NodeVisitor):
             if c == ref_child:
                 found = True
         return next_childs
+
+    def get_all_previous_siblings(self, parent: c_ast.Node, ref_child: c_ast.Node, deep_search=False):
+        childs = self.get_all_childs(parent, deep_search)
+        previous_childs = []
+        for c in childs:
+            if c == ref_child:
+                return previous_childs
+            if not self.is_child_of(ref_child, c):
+                previous_childs += [c]
+        return previous_childs
 
     def __str__(self):
         result = ""

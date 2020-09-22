@@ -16,3 +16,4 @@ from .variables import *
 from .bugprone import *
 from .readability import *
 from .RuleExecutionError import *
+from .ConditionAnalzer import *
